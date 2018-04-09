@@ -9,4 +9,10 @@ import scrapy
 
 
 class QuestionsItem(scrapy.Item):
+    content = scrapy.Field()
+    subject = scrapy.Field()
+    level = scrapy.Field()
+    answer = scrapy.Field()
+    options = scrapy.Field()
+    analysis = scrapy.Field()
     pass
