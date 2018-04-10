@@ -15,4 +15,5 @@ class QuestionsItem(scrapy.Item):
     answer = scrapy.Field()
     options = scrapy.Field()
     analysis = scrapy.Field()
+    source = scrapy.Field()
     pass

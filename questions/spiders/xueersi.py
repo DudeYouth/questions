@@ -14,7 +14,7 @@ class xueersiSpider(scrapy.Spider):
         "http://tiku.xueersi.com/shiti/list_1_2_0_0_4_0_1",
         "http://tiku.xueersi.com/shiti/list_1_3_0_0_4_0_1",
     ]
-    levels = ['偏易','中等','偏难']
+    levels = ['偏易','中档','偏难']
     subjects = ['英语','语文','数学']
     count = 0
     # def start_requests(self):
@@ -34,6 +34,7 @@ class xueersiSpider(scrapy.Spider):
             if len(questions):
                 # 获取题目
                 question = questions[0].strip()
+                item['source'] = question
                 dr = re.compile(r'<[^>]+>',re.S)
                 question = dr.sub('',question)
                 content = res.extract()
@@ -60,8 +61,8 @@ class xueersiSpider(scrapy.Spider):
         res = response.xpath('//div[@class="part"]').re(ur'<td>([\s\S]+?)<\/td>')
         con = re.findall(ur'([\s\S]+?)<br>[\s\S]+?([A-D])',res[0])
         if con:
-            answer = con[0][0]
-            analysis = con[0][1]
+            answer = con[0][1]
+            analysis = con[0][0]
         else:
             answer = res[0]
             analysis = ''
