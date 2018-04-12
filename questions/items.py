@@ -16,4 +16,5 @@ class QuestionsItem(scrapy.Item):
     options = scrapy.Field()
     analysis = scrapy.Field()
     source = scrapy.Field()
+    answer_url = scrapy.Field()
     pass

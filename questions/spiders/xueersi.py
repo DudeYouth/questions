@@ -18,7 +18,7 @@ class xueersiSpider(scrapy.Spider):
     subjects = ['英语','语文','数学']
     count = 0
     # def start_requests(self):
-    #     yield scrapy.Request('http://tiku.xueersi.com/shiti/5717',callback=self.getanswer)
+    #     yield scrapy.Request('http://tiku.xueersi.com/shiti/list_1_2_0_0_4_0_39',callback=self.getquestion)
     def parse(self, response):
         arr = response.xpath("//ul[@class='pagination']/li/a/text()").extract()
         total_page = arr[3]
@@ -47,7 +47,8 @@ class xueersiSpider(scrapy.Spider):
                 item['level'] = self.levels.index(levels[0])+1
                 
                 # 获取选项
-                options =  re.findall(ur'[A-D]\.([\s\S]+?)<(\/td|\/p|br)',content)
+                options =  re.findall(ur'[A-D][\.．]([\s\S]+?)<(\/td|\/p|br)',content)
+                print(options,content)
                 item['options'] = options
                 if len(options):
                     url = res.xpath('./div[@class="info"]/a/@href').extract()[0]
@@ -70,6 +71,7 @@ class xueersiSpider(scrapy.Spider):
             item = response.meta['item']
             item['answer'] = answer.strip()
             item['analysis'] = analysis.strip()
+            item['answer_url'] = response.url
             yield item
         
         

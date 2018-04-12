@@ -25,8 +25,9 @@ class QuestionsPipeline(object):
         self.cursor.execute(selectstr)
         res = self.cursor.fetchone()
         if not res:
-            sqlstr = "insert into question(content,source,subject,level,answer,analysis,hash) VALUES('%s','%s','%s','%s','%s','%s','%s')"%(content,pymysql.escape_string(item['source']),item['subject'],item['level'],item['answer'],pymysql.escape_string(item['analysis']),hash)
+            sqlstr = "insert into question(content,source,subject,level,answer,analysis,hash,answer_url) VALUES('%s','%s','%s','%s','%s','%s','%s','%s')"%(content,pymysql.escape_string(item['source']),item['subject'],item['level'],item['answer'],pymysql.escape_string(item['analysis']),hash,item['answer_url'])
             self.cursor.execute(sqlstr)
+            qid = self.cursor.lastrowid
             for index in  range(len(item['options'])):
                 option = item['options'][index]
                 answer = self.answer.index(item['answer'])
@@ -34,7 +35,7 @@ class QuestionsPipeline(object):
                     ans = '2'
                 else:
                     ans = '1'
-                sqlstr = "insert into options(content,qid,answer) VALUES('%s','%s','%s')"%(pymysql.escape_string(option[0]),self.cursor.lastrowid,ans)
+                sqlstr = "insert into options(content,qid,answer) VALUES('%s','%s','%s')"%(pymysql.escape_string(option[0]),qid,ans)
                 self.cursor.execute(sqlstr)
             self.connect.commit() 
             #self.connect.close() 
